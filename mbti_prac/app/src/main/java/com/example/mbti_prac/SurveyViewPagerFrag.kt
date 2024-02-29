@@ -1,5 +1,6 @@
 package com.example.mbti_prac
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,10 @@ import androidx.viewpager2.widget.ViewPager2
 
 class SurveyViewPagerFrag: Fragment() {
     private var pageType = 0
+
+    private var questionList = listOf(
+        MbtiQuestion(R.string.question1_1.toString(), R.string.question1_1_answer1.toString(), R.string.question1_1_answer2.toString())
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let{ pageType = it.getInt(MBTI_SURVEY_PAGE_TYPE) }
@@ -37,8 +42,10 @@ class SurveyViewPagerFrag: Fragment() {
         val viewPager : ViewPager2? = activity?.findViewById<ViewPager2>(R.id.viewPager_survey)
         val btn_survey_submit = view.findViewById<Button>(R.id.btn_survey_submit)
         btn_survey_submit.setOnClickListener{
-            viewPager?.currentItem = pageType
+            viewPager?.currentItem = pageType + 1
         }
+
+
 
         return view
     }
