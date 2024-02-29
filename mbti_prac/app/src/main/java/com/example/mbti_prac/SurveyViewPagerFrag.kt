@@ -13,10 +13,10 @@ import androidx.viewpager2.widget.ViewPager2
 
 class SurveyViewPagerFrag: Fragment() {
     private var pageType = 0
-
-    private var questionList = listOf(
-        MbtiQuestion(R.string.question1_1.toString(), R.string.question1_1_answer1.toString(), R.string.question1_1_answer2.toString())
-    )
+    private lateinit var questionListPage1 : List<MbtiQuestion>
+    private lateinit var questionListPage2 : List<MbtiQuestion>
+    private lateinit var questionListPage3 : List<MbtiQuestion>
+    private lateinit var questionListPage4 : List<MbtiQuestion>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let{ pageType = it.getInt(MBTI_SURVEY_PAGE_TYPE) }
@@ -29,10 +29,27 @@ class SurveyViewPagerFrag: Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.frag_survey, container, false)
 
-        var surveyData = ArrayList<MbtiQuestion>()
-        surveyData.add(MbtiQuestion("1.","dd", "ss"))
-        surveyData.add(MbtiQuestion("1.","dd", "ss"))
-        surveyData.add(MbtiQuestion("1.","dd", "ss"))
+        questionListPage1 = listOf(
+            MbtiQuestion(getString(R.string.question1_1), getString(R.string.question1_2_answer1), getString(R.string.question1_2_answer2)),
+            MbtiQuestion(getString(R.string.question1_2), getString(R.string.question1_2_answer1), getString(R.string.question1_2_answer2)),
+            MbtiQuestion(getString(R.string.question1_3), getString(R.string.question1_2_answer1), getString(R.string.question1_2_answer2))
+        )
+        questionListPage2 = listOf(
+            MbtiQuestion(getString(R.string.question2_1), getString(R.string.question2_2_answer1), getString(R.string.question2_2_answer2)),
+            MbtiQuestion(getString(R.string.question2_2), getString(R.string.question2_2_answer1), getString(R.string.question2_2_answer2)),
+            MbtiQuestion(getString(R.string.question2_3), getString(R.string.question2_2_answer1), getString(R.string.question2_2_answer2))
+        )
+        questionListPage3 = listOf(
+            MbtiQuestion(getString(R.string.question3_1), getString(R.string.question3_2_answer1), getString(R.string.question3_2_answer2)),
+            MbtiQuestion(getString(R.string.question3_2), getString(R.string.question3_2_answer1), getString(R.string.question3_2_answer2)),
+            MbtiQuestion(getString(R.string.question3_3), getString(R.string.question3_2_answer1), getString(R.string.question3_2_answer2))
+        )
+        questionListPage4 = listOf(
+            MbtiQuestion(getString(R.string.question4_1), getString(R.string.question4_2_answer1), getString(R.string.question4_2_answer2)),
+            MbtiQuestion(getString(R.string.question4_2), getString(R.string.question4_2_answer1), getString(R.string.question4_2_answer2)),
+            MbtiQuestion(getString(R.string.question4_3), getString(R.string.question4_2_answer1), getString(R.string.question4_2_answer2))
+        )
+        var surveyData = setSurveyQuestions(pageType)
 
         val adapter = SurveyRecyclerViewAdapter(surveyData)
         val recyclerView: RecyclerView? = view.findViewById(R.id.rv_survey)
@@ -45,11 +62,24 @@ class SurveyViewPagerFrag: Fragment() {
             viewPager?.currentItem = pageType + 1
         }
 
-
-
+        if(pageType == 3) {
+            btn_survey_submit.text = "submit"
+            adapter.notifyDataSetChanged()
+        } else {
+            btn_survey_submit.text = "next page"
+            adapter.notifyDataSetChanged()
+        }
         return view
     }
 
+    fun setSurveyQuestions(page: Int): List<MbtiQuestion>{
+        when(page){
+            0 -> return questionListPage1
+            1 -> return questionListPage2
+            2 -> return questionListPage3
+            else -> return questionListPage4
+        }
+    }
     companion object{
         const val MBTI_SURVEY_PAGE_TYPE = "pageType"
         fun newInstnace(pageType: Int): Fragment{
